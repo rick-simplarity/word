@@ -23,7 +23,8 @@ class SearchController < ApplicationController
 		@audio_results = JSON.parse(audio_buffer)
 		@picture_url = "https://openclipart.org/search/json/?query=water"
 		pic_buffer = RestClient.get @picture_url
-		@pic_results = JSON.parse(pic_buffer)
+		pic_results = JSON.parse(pic_buffer)
+		@image= pic_results['payload'][0]['svg']['png_thumb']
 
 		else
 		end
