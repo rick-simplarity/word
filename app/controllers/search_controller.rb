@@ -21,6 +21,10 @@ class SearchController < ApplicationController
 		@audio_url = "http://api.wordnik.com:80/v4/word.json/#{params[:search]}/audio?includeDuplicates=false&useCanonical=false&skip=0&api_key=#{Wordnik.configuration.api_key}"
 		audio_buffer = RestClient.get @audio_url
 		@audio_results = JSON.parse(audio_buffer)
+		@picture_url = "https://openclipart.org/search/json/?query=water"
+		pic_buffer = RestClient.get @picture_url
+		@pic_results = JSON.parse(pic_buffer)
+
 		else
 		end
 	end
