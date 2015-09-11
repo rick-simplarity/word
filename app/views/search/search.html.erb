@@ -38,12 +38,11 @@
 
       <h3> <blockquote>Audio </blockquote></h3>
         <% @audio_results.each do |x| %>
-          <p> <%= x['fileUrl']%></p>
+          <audio controls><source src="<%= x['fileUrl']%>" type="audio/mpeg"></audio>
         <% end %> 
 
       <h3> <blockquote>Pictures </blockquote></h3>
         <img alt="Picture" src="<%= @image %>" />
-
  <% end %>
 
 </div>
