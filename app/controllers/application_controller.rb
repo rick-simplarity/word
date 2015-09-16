@@ -8,4 +8,5 @@ class ApplicationController < ActionController::Base
     each { |i| hash[yield(i)] ||= (array << i) }
     array
   end
+
 end

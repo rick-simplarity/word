@@ -6,7 +6,7 @@
              of using a Rails form helper -->
         <button class="btn btn-primary" type="submit">Search</button>
       </div>
-    <% end %>
+      <% end %>
 
     <% if params[:search] %>
 
@@ -42,8 +42,15 @@
         <% end %> 
 
       <h3> <blockquote>Pictures </blockquote></h3>
-        <img alt="Picture" src="<%= @image %>" />
+      <% @pic_results['payload'].each do |x| %>
+        <img src="<%= x['svg']['png_thumb'] %>">
+      <% end %>
+
+      <h3> <blockquote>MW Dictionary API</blockquote></h3>
+      <% @xml.css('entry').each do |x| %>
+      <p> <%= x.css('hw').text %> - <%= x.css('fl').text %> - <%= x.css('dt').first.text %>  </p>
+      <% end %>
+      
  <% end %>
 
 </div>
-

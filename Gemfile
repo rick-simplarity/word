@@ -25,7 +25,13 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'wordnik'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'rest-client'
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+#gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem 'pdfkit', '~> 0.8.2'
+#gem 'wkhtmltopdf-binary', '~> 0.9.9.3'
+gem 'wicked_pdf', '~> 0.11.0'
+gem 'nokogiri', '~> 1.6.6.2'
+gem 'httparty', '~> 0.13.5'
+gem 'mw_dictionary_api', '~> 0.1.3'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
