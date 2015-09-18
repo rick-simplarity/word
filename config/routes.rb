@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  match 'search/convert_pdf' => 'search#convert_pdf', format: :pdf, via: [:get, :post]
   root 'search#search'
 
   # Example of regular route:
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :search
+  resources :search 
   # Example resource route with options:
   #   resources :products do
   #     member do
