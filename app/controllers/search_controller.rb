@@ -39,13 +39,14 @@ class SearchController < ApplicationController
                 related_words = params["related_words"]
                 top_example = params["top_example"]
                 examples = params["examples"]
-
+                dictionaries = params["mw_dictionaries"]
+                pictures = params["pictures"]
                 puts definitions
                 respond_to do |format|
                         format.pdf do
                                 pdf = Prawn::Document.new
                                         pdf.move_down(30)
-                                        pdf.text params['word'], :size => 30
+                                        pdf.text params['word'].titleize, :size => 30
                                         pdf.move_down(30)
                                 #Definition
                                         if params['definition_check'] == "1"
@@ -100,7 +101,35 @@ class SearchController < ApplicationController
                                         end
                                         
                                         end
-                                send_data pdf.render, filename: "dictnory_report.pdf",
+                                        
+
+                                        if params['pictures_check'] == "1"
+                                        pdf.text "Pictures", :size => 20
+                                        pdf.stroke_horizontal_rule
+                                        pictures.each do|e|
+                                                pdf.move_down(20)
+                                                pictures = eval(e)
+                                                begin
+                                                pdf.image open(pictures['svg']['png_thumb'] ), :scale => 0.7, :align => :center
+                                                rescue
+                                                        next
+                                                 end
+                                        end
+                                        
+                                        end
+
+
+#                                        if params['mw_dictionary_check'] == "1"
+ #                                               pdf.text "My Dictionary API", :size => 20
+  #                                              pdf.stroke_horizontal_rule
+   #                                             dictionaries.each do|d|
+    #                                            pdf.move_down(20)
+     #                                           dictionaries = eval(d)
+      #                                          pdf.text "#{dictionaries.css('hw').text} - #{dictionaries.css('fl').text} - #{dictionaries.css('dt').first.text}"
+       #                                 end
+        #                                
+         #                               end
+                                send_data pdf.render, filename: "dictionary_report.pdf",
                                   type: "application/pdf",
                                    disposition: "inline"
 

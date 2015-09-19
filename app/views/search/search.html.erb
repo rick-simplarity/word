@@ -48,13 +48,15 @@
                 <audio controls><source src="<%= x['fileUrl']%>" type="audio/mpeg"></audio>
 <% end %> 
 
-        <h3> <blockquote>Pictures </blockquote></h3>
+        <h3> <blockquote><%= check_box_tag 'pictures_check',1, false, class: 'check_boxes' %>Pictures </blockquote></h3>
         <% @pic_results['payload'].each do |x| %>
+         <%= hidden_field_tag "pictures[]", x %>
                 <img src="<%= x['svg']['png_thumb'] %>">
 <% end %>
 
-        <h3> <blockquote>MW Dictionary API</blockquote></h3>
+        <h3> <blockquote><%#= check_box_tag 'mw_dictionary_check',1, false, class: 'check_boxes' %>MW Dictionary API</blockquote></h3>
         <% @xml.css('entry').each do |x| %>
+         <%= hidden_field_tag "mw_dictionaries[]", x %>
                 <p> <%= x.css('hw').text %> - <%= x.css('fl').text %> - <%= x.css('dt').first.text %>  </p>
 <% end %>
 
