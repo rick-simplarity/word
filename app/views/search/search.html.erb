@@ -1,68 +1,92 @@
 <div class="container">
-        <%= form_tag(root_path, :method => "get", class: "form-inline", id: "search-form") do %>
-                <div class="input-append">
-                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search words" %>
-                <!-- In order to have the "search" icon int the button, we need to use plain HTML instead 
+  <%= form_tag(root_path, :method => "get", class: "form-inline", id: "search-form") do %>
+    <div class="input-append">
+      <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search words" %>
+      <!-- In order to have the "search" icon int the button, we need to use plain HTML instead 
              of using a Rails form helper -->
-                <button class="btn btn-primary" type="submit">Search</button>
-        </div>
-<% end %>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  <% end %>
 
-        <% if params[:search] %>
-                <%= form_tag search_convert_pdf_path(format: "pdf"), :method => :post do %>
-
-                <h3><blockquote> Results </blockquote></h3>	
+  <% if params[:search] %>
+    <%= form_tag search_convert_pdf_path(format: "pdf"), :method => :post do %>
+      <div class="row">
+        <h3><blockquote> Results </blockquote></h3>	
+        <div class="col-xs-1"></div>
         <p> <b> Word </b> - <%= @word %></p>
         <%= hidden_field_tag "word", @word %>
-        <h3><blockquote> <%= check_box_tag 'definition_check', 1, false, class: 'check_boxes' %>Definitions </blockquote></h3>		
-        <% @definitions.each do |x| %>
-                <%= hidden_field_tag "definitions[]", x %>
+        
+        <h3><blockquote> <%# check_box_tag 'definition_check', 1, false, class: 'check_boxes' %>Definitions </blockquote></h3>
+        <%= hidden_field_tag "definitions_count", @definitions.count %>
+        <% @definitions.each_with_index do |x,i| %>
+        <div class="col-xs-1"></div>
+          <p>
+            <%= check_box_tag "part_of_speech_#{i}_check", 1, false, class: 'check_boxes' %>
+            <%= hidden_field_tag "part_of_speech_#{i}", x %>
+            <b><%= x['partOfSpeech'] %></b> - <%= x['text'] %>  
+          </p>
+        <% end %>
 
-        <p><b>  <%= x['partOfSpeech'] %> </b> - <%= x['text'] %>  </p>
-<% end %>
-        <h3><blockquote> <%= check_box_tag 'pronounciation_check',1, false, class: 'check_boxes' %>Pronounciations </blockquote></h3>
+        <h3><blockquote> <%# check_box_tag 'pronounciation_check',1, false, class: 'check_boxes' %>Pronounciations </blockquote></h3>
+        <%= hidden_field_tag "pronounciations_count", @pro_results.count %>
+        <% @pro_results.each_with_index do |x,i| %>
+          <%= hidden_field_tag "raw_type_#{i}", x %>
+          <div class="col-xs-1"></div>
+          <p><%= check_box_tag "raw_type_#{i}_check", 1, false, class: 'check_boxes' %> <%= x['rawType'] %> - <%= x['raw']%></p>
+        <% end %>
 
-        <% @pro_results.each do |x| %>
-                <%= hidden_field_tag "pronounciations[]", x %>
-                <p> <%= x['rawType'] %> - <%= x['raw']%></p>
-<% end %>
-
-        <h3><blockquote> <%= check_box_tag 'related_words_check',1, false, class: 'check_boxes' %>Related Words</blockquote> </h3>
-        <% @rel_results.each do |x| %>
-                <%= hidden_field_tag "related_words[]", x %>
-                <p><%= x['relationshipType']%> = <%= x['words'].join(",") %></p>
-<% end %>
+        <h3><blockquote> <%# check_box_tag 'related_words_check',1, false, class: 'check_boxes' %>Related Words</blockquote> </h3>
+        <%= hidden_field_tag "related_words_count", @rel_results.count %>
+        <% @rel_results.each_with_index do |x,i| %>
+          <div class="col-xs-1"></div>
+          <%= hidden_field_tag "relationship_type_#{i}", x %>
+          <p><%= check_box_tag "relationship_type_#{i}_check", 1, false, class: 'check_boxes' %><%= x['relationshipType']%> = <%= x['words'].join(",") %></p>
+        <% end %>
 
         <h3><blockquote> <%= check_box_tag 'top_example_check',1, false, class: 'check_boxes' %>Top Example </blockquote></h3>
-                <%= hidden_field_tag "top_example", @top_results['text'] %>
+        <%= hidden_field_tag "top_example", @top_results['text'] %>
+        <div class="col-xs-1"></div>
         <p> <%= @top_results['text'] %> </p>
 
-        <h3> <blockquote><%= check_box_tag 'example_check',1, false, class: 'check_boxes' %>Example </blockquote></h3>
-        <% @example_results['examples'].each do |x| %>
-         <%= hidden_field_tag "examples[]", x %>
-                <p> <%= x['text']%></p>
-<% end %> 
+        <h3> <blockquote><%# check_box_tag 'example_check',1, false, class: 'check_boxes' %>Example </blockquote></h3>
+        <%= hidden_field_tag "examples_count", @example_results['examples'].count %>
+        <% @example_results['examples'].each_with_index do |x, i| %>
+          <%= hidden_field_tag "example_#{i}", x %>
+          <div class="col-xs-1"></div>
+          <p><%= check_box_tag "example_#{i}_check", 1, false, class: 'check_boxes' %> <%= x['text']%></p>
+        <% end %> 
 
         <h3> <blockquote>Audio </blockquote></h3>
         <% @audio_results.each do |x| %>
-                <audio controls><source src="<%= x['fileUrl']%>" type="audio/mpeg"></audio>
-<% end %> 
+          <audio controls><source src="<%= x['fileUrl']%>" type="audio/mpeg"></audio>
+        <% end %> 
 
-        <h3> <blockquote><%= check_box_tag 'pictures_check',1, false, class: 'check_boxes' %>Pictures </blockquote></h3>
-        <% @pic_results['payload'].each do |x| %>
-         <%= hidden_field_tag "pictures[]", x %>
-                <img src="<%= x['svg']['png_thumb'] %>">
-<% end %>
+        <h3> <blockquote><%# check_box_tag 'pictures_check',1, false, class: 'check_boxes' %>Pictures </blockquote></h3>
+        <div class="pull-left">
+          <%= hidden_field_tag "pictures_count", @pic_results['payload'].count %>
+          <% @pic_results['payload'].each_with_index do |x, i| %>
+            <%= hidden_field_tag "picture_#{i}", x %>
+            <span class="list_images">
+              <%= check_box_tag "picture_#{i}_check", 1, false, class: 'check_boxes' %>
+              <img src="<%= x['svg']['png_thumb'] %>" height="150px">
+              </span>
+          <% end %>
+        </div>
+        <div class="pull-left">
+          <h3> <blockquote><%#= check_box_tag 'mw_dictionary_check',1, false, class: 'check_boxes' %>MW Dictionary API</blockquote></h3>
 
-        <h3> <blockquote><%#= check_box_tag 'mw_dictionary_check',1, false, class: 'check_boxes' %>MW Dictionary API</blockquote></h3>
-        <% @xml.css('entry').each do |x| %>
-         <%= hidden_field_tag "mw_dictionaries[]", x %>
-                <p> <%= x.css('hw').text %> - <%= x.css('fl').text %> - <%= x.css('dt').first.text %>  </p>
-<% end %>
-
-<%= submit_tag "Export as PDF", :class => 'btn btn-primary' %>
-<% end %>
-<% end %>
+          <%= hidden_field_tag "mw_dictionaries_count", @xml.css('entry').count %>
+          <% @xml.css('entry').each_with_index do |x,i| %>
+            <%= hidden_field_tag "hw_#{i}", x.css('hw').text %>
+            <p><%= check_box_tag "hw_#{i}_check", 1, false, class: 'check_boxes' %> <%= x.css('hw').text %> - <%= x.css('fl').text %> - <%= x.css('dt').first.present? ? x.css('dt').first.text : "" %>  </p>
+          <% end %>
+          <p></p>
+        </div>
+      </div>
+      <%= submit_tag "Export as PDF", :class => 'btn btn-primary' %>
+    <% end %>
+  <% end %>
 </div>
+
 <br />
 <br />

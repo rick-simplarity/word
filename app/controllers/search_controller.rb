@@ -34,104 +34,144 @@ class SearchController < ApplicationController
 
         end
         def convert_pdf
-                definitions = params["definitions"]
-                pronounciations = params["pronounciations"]
-                related_words = params["related_words"]
+                definitions_count = params["definitions_count"]
+                pronounciations_count = params["pronounciations_count"]
+                related_words_count = params["related_words_count"]
                 top_example = params["top_example"]
-                examples = params["examples"]
-                dictionaries = params["mw_dictionaries"]
-                pictures = params["pictures"]
-                puts definitions
+                examples_count = params["examples_count"]
+                mw_dictionaries_count = params["mw_dictionaries_count"]
+                pictures_count = params["pictures_count"]
+                puts definitions_count
                 respond_to do |format|
                         format.pdf do
-                                pdf = Prawn::Document.new
+                                pdf = Prawn::Document.new(:page_layout => :landscape)
                                         pdf.move_down(30)
                                         pdf.text params['word'].titleize, :size => 30
                                         pdf.move_down(30)
                                 #Definition
-                                        if params['definition_check'] == "1"
-                                        pdf.text "Definition", :size => 20
-                                        pdf.stroke_horizontal_rule
-                                        definitions.each do|d|
+                                        a = 0
+                                        (0..definitions_count.to_i).each do |count|
+                                            if params["part_of_speech_#{count}_check"] == "1"
+                                              if a == 0
+                                                pdf.text "Definition", :size => 20
+                                                pdf.stroke_horizontal_rule
                                                 pdf.move_down(20)
-                                                definition = eval(d)
+                                              end
+                                                definition = eval(params["part_of_speech_#{count}"])
                                                 pdf.text "#{definition['partOfSpeech']} - #{definition['text']}" 
-                                                
+                                              a=a+1
+                                            end
                                         end
-                                        end
-                                        pdf.move_down(40)
                                  #Pronounciation
-                                        if params['pronounciation_check'] == "1"
-                                        pdf.text "Pronounciation", :size => 20
-                                        pdf.stroke_horizontal_rule
-                                        pronounciations.each do|p|
-                                                pdf.move_down(20)
-                                                pronounciations = eval(p)
-                                                pdf.text "#{pronounciations['rawType']}" #- #{pronounciations['raw']}" 
+                                        b = 0
+                                        (0..pronounciations_count.to_i).each do |count|
+                                          if params["raw_type_#{count}_check"] == "1"
+                                            if b == 0
+                                              pdf.move_down(40)
+                                              pdf.text "Pronounciation", :size => 20
+                                              pdf.stroke_horizontal_rule
+                                            end
+                                            pdf.move_down(20)
+                                            pronounciations = eval(params["raw_type_#{count}"])
+                                            pdf.text "#{pronounciations['rawType']}" #- #{pronounciations['raw']}" 
+                                            b = b+1
+                                          end
                                         end
-                                        
-                                        end
-                                        pdf.move_down(40)
                                         #Related Words
-                                        if params['related_words_check'] == "1"
-                                        pdf.text "Related Words", :size => 20
-                                        pdf.stroke_horizontal_rule
-                                        related_words.each do|r|
-                                                pdf.move_down(20)
-                                                related_words = eval(r)
-                                                pdf.text "#{related_words['relationshipType']} = #{related_words['words'].join(",")}"
+                                        e = 0
+                                        (0..related_words_count.to_i).each do |count|                                        
+                                          if params["relationship_type_#{count}_check"] == "1"
+                                            if e == 0
+                                              pdf.move_down(40)
+                                              pdf.text "Related Words", :size => 20
+                                              pdf.stroke_horizontal_rule
+                                            end
+                                            pdf.move_down(20)
+                                            related_words = eval(params["relationship_type_#{count}"])
+                                            pdf.text "#{related_words['relationshipType']} = #{related_words['words'].join(",")}"
+                                            e = e+1
+                                          end
                                         end
-                                        
-                                        end
-                                        pdf.move_down(40)
                                         if params['top_example_check'] == "1"
+                                        pdf.move_down(40)
                                         pdf.text "Top Examples", :size => 20
                                         pdf.stroke_horizontal_rule
                                                 pdf.move_down(20)
                                                 pdf.text top_example
                                         end
-                                       puts "examples_check #{params['examples_check']}"
-                                        if params['examples_check'] == "1"
-                                        pdf.text "Examples", :size => 20
-                                        pdf.stroke_horizontal_rule
-                                        examples.each do|e|
-                                                pdf.move_down(20)
-                                                examples = eval(e)
-                                                pdf.text examples['text']
-                                        end
-                                        
-                                        end
-                                        
 
-                                        if params['pictures_check'] == "1"
-                                        pdf.text "Pictures", :size => 20
-                                        pdf.stroke_horizontal_rule
-                                        pictures.each do|e|
-                                                pdf.move_down(20)
-                                                pictures = eval(e)
-                                                begin
-                                                pdf.image open(pictures['svg']['png_thumb'] ), :scale => 0.7, :align => :center
-                                                rescue
-                                                        next
-                                                 end
-                                        end
-                                        
+                                       puts "examples_check"
+                                        c = 0
+                                        pdf.move_down(40)
+                                        (0..examples_count.to_i).each do |count|
+                                          if params["example_#{count}_check"] == "1"
+                                            if c == 0
+                                              pdf.text "Examples", :size => 20
+                                              pdf.stroke_horizontal_rule
+                                              pdf.move_down(20)
+                                            end
+                                            examples = eval(params["example_#{count}"])
+                                            pdf.text examples['text']
+                                            pdf.move_down(10)
+                                            c = c+1
+                                          end
                                         end
 
+                                        g = 0
+                                        pdf.move_down(40)
+                                        (0..mw_dictionaries_count.to_i).each do |count|
+                                          if params["hw_#{count}_check"] == "1"
+                                            if g == 0
+                                              pdf.text "My Dictionary API", :size => 20
+                                              pdf.stroke_horizontal_rule
+                                            end
+                                            pdf.move_down(20)
+                                            pdf.text  params["hw_#{count}"].to_s
+                                          end
+                                          g = g+1
+                                        end
 
-#                                        if params['mw_dictionary_check'] == "1"
- #                                               pdf.text "My Dictionary API", :size => 20
-  #                                              pdf.stroke_horizontal_rule
-   #                                             dictionaries.each do|d|
-    #                                            pdf.move_down(20)
-     #                                           dictionaries = eval(d)
-      #                                          pdf.text "#{dictionaries.css('hw').text} - #{dictionaries.css('fl').text} - #{dictionaries.css('dt').first.text}"
-       #                                 end
-        #                                
-         #                               end
-                                send_data pdf.render, filename: "dictionary_report.pdf",
-                                  type: "application/pdf",
-                                   disposition: "inline"
+                                        d = 0
+                                        pdf.move_down(40)
+                                        if pdf.cursor < 100
+                                          pdf.start_new_page
+                                        end
+                                        x,y = 0, pdf.cursor-50
+
+                                        (0..pictures_count.to_i).each do |count|
+                                          if params["picture_#{count}_check"] == "1"
+                                            if d == 0
+                                              pdf.text "Pictures", :size => 20
+                                              pdf.stroke_horizontal_rule 
+                                            end
+                                            pdf.move_down(20)
+                                            pictures = eval(params["picture_#{count}"])
+                                            begin
+                                              size=100
+                                              if x < 650
+                                                pdf.bounding_box([x,y], :width => size, :height => size) do
+                                                  pdf.image open(pictures['svg']['png_thumb'] ),:fit => [size, size]
+                                                  x = x+120
+                                                end
+                                              else
+                                                if pdf.cursor < 50
+                                                  pdf.start_new_page
+                                                end
+                                                x = 0
+                                                y = pdf.cursor 
+                                                pdf.bounding_box([x,y], :width => size, :height => size) do
+                                                  pdf.image open(pictures['svg']['png_thumb'] ),:fit => [size, size]
+                                                  x = x+120                                                
+                                                end
+                                              end
+                                            rescue
+                                              next
+                                            end
+                                            d = d+1
+                                          end
+                                        end
+                                send_data(pdf.render, filename: "dictionary_report.pdf",
+                                  type: "application/pdf")
 
                         end
 
