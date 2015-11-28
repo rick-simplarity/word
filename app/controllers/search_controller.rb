@@ -150,7 +150,9 @@ class SearchController < ApplicationController
                                               size=100
                                               if x < 650
                                                 pdf.bounding_box([x,y], :width => size, :height => size) do
-                                                  pdf.image open(pictures['svg']['png_thumb'] ),:fit => [size, size]
+                                                  system("convert #{pictures['svg']['png_thumb']} -background white -flatten -define png:color-type=2 -define png:bit-depth=8 image.png")
+                                                  pdf.image 'image.png',:fit => [size, size]
+                                                  #pdf.text pictures['svg']['png_thumb']
                                                   x = x+120
                                                 end
                                               else
@@ -160,7 +162,7 @@ class SearchController < ApplicationController
                                                 x = 0
                                                 y = pdf.cursor 
                                                 pdf.bounding_box([x,y], :width => size, :height => size) do
-                                                  pdf.image open(pictures['svg']['png_thumb'] ),:fit => [size, size]
+                                                  pdf.image open(pictures['svg']['png_thumb']),:fit => [size, size]
                                                   x = x+120                                                
                                                 end
                                               end
@@ -170,7 +172,7 @@ class SearchController < ApplicationController
                                             d = d+1
                                           end
                                         end
-                                send_data(pdf.render, filename: "dictionary_report.pdf",
+                                send_data(pdf.render, filename: "#{Time.now.strftime("%m-%d-%Y")}-#{params['word']}.pdf",
                                   type: "application/pdf")
 
                         end

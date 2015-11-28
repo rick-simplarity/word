@@ -11,7 +11,7 @@
   <% if params[:search] %>
     <%= form_tag search_convert_pdf_path(format: "pdf"), :method => :post do %>
       <div class="row">
-        <h3><blockquote> Results </blockquote></h3>	
+        <h3><blockquote> Results </blockquote></h3> 
         <div class="col-xs-1"></div>
         <p> <b> Word </b> - <%= @word %></p>
         <%= hidden_field_tag "word", @word %>
