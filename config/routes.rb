@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   match 'search/convert_pdf' => 'search#convert_pdf', format: :pdf, via: [:get, :post]
+  match 'search/convert_pdf_wicked' => 'search#convert_pdf_wicked', format: :pdf, via: [:get, :post]
   root 'search#search'
 
   # Example of regular route:

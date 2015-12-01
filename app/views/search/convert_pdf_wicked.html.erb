@@ -1,0 +1,71 @@
+<div class="container">
+	<h1><%= @params['word'].capitalize %></h1>
+	<div class="row">
+		<div class="col-60">
+			<div class="row">
+				<h2 class="pull-left">STEP 1: </h2><p class="top_30">Say <%= @params['word'].capitalize %> 3 times</p>
+			</div>
+			<div class="row">
+				<h2 class="pull-left">STEP 2: </h2><p class="top_30"><%= @params['word'].capitalize %> used in context</p>
+				<% (0..@params["examples_count"].to_i).each_with_index do |value,index| %>
+					<% if @params["example_#{index}_check"] == "1" %>
+						<% example = eval(@params["example_#{index}"]) %>
+						<p class="width_100">
+							<%= example['text']%>
+						</p>
+					<% end %>
+				<% end %>
+			</div>
+		</div>
+		<div class="col-40">
+			<% (0..@params["pictures_count"].to_i).each_with_index do |value,index| %>
+				<% if @params["picture_#{index}_check"] == "1" %>
+					<% picture = eval(@params["picture_#{index}"]) %>
+					<p class="width_100">
+						<%= image_tag picture['svg']['png_thumb'] %>
+					</p>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="row">
+		<h2 class="pull-left">STEP 3: </h2><p class="top_30"><%= @params['word'].capitalize %> definition</p>
+		<% (0..@params["definitions_count"].to_i).each_with_index do |value,index| %>
+			<% if @params["part_of_speech_#{index}_check"] == "1" %>
+				<% definition = eval(@params["part_of_speech_#{index}"]) %>
+				<p class="width_100">
+					<%= definition['partOfSpeech'] + "-" + definition['text']%>
+				</p>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="row">
+		<h2 class="pull-left">STEP 4: </h2><p class="top_30"><%= @params['word'].capitalize %> elementary definition</p>
+		<% (0..@params["elem_def_count"].to_i).each_with_index do |value,index| %>
+			<% if @params["elem_def_#{index}_check"] == "1" %>
+				<% elementary_definition = eval(@params["elem_def_#{index}"]) %>
+				<p class="width_100">
+					<%= elementary_definition['word'] + '-' + elementary_definition['grammar'] + '-' + elementary_definition['text'] %>
+				</p>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="row">
+		<h2 class="pull-left">STEP 5: </h2><p class="top_30"><%= @params['word'].capitalize %> challenges</p>
+		<% (0..@params["definitions_count"].to_i).each_with_index do |value,index| %>
+			<% if @params["relationship_type_#{index}_check"] == "1" %>
+				<% related_words = eval(@params["relationship_type_#{index}"]) %>
+				<p class="width_100">
+					<%= related_words['relationshipType'] + "=" + related_words['words'].join(",") %>
+				</p>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="row">
+		<h2 class="pull-left">STEP 6: </h2><p class="top_30"><%= @params['word'].capitalize %> student activity</p>
+	</div>
+	<div class="row">
+		<h2 class="pull-left">STEP 7: </h2><p class="top_30"><%= @params['word'].capitalize %> mastery activity</p>
+	</div>
+</div>

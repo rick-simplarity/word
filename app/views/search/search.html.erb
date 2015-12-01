@@ -9,7 +9,7 @@
   <% end %>
 
   <% if params[:search] %>
-    <%= form_tag search_convert_pdf_path(format: "pdf"), :method => :post do %>
+    <%= form_tag search_convert_pdf_wicked_path(format: "pdf"), :method => :post do %>
       <div class="row">
         <h3><blockquote> Results </blockquote></h3> 
         <div class="col-xs-1"></div>
@@ -82,6 +82,20 @@
           <% end %>
           <p></p>
         </div>
+        <div class="pull-left">
+          <h3> <blockquote><%#= check_box_tag 'mw_dictionary_check',1, false, class: 'check_boxes' %>Elementary Definition</blockquote></h3>
+
+          <%= hidden_field_tag "elem_def_count", @xml.css('entry').count %>
+          <% @elementary_xml.css('entry').each_with_index do |x,i| %>
+            <% if x.css('hw').text == params[:search] %>
+              <% text = x.css('dt').first.present? ? x.css('dt').first.text.gsub("'",'') : "" %>
+              <%= hidden_field_tag "elem_def_#{i}", "{'word' => '#{x.css('hw').text}', 'grammar' => '#{x.css('fl').text}', 'text' => '#{text}'}" %>
+              <p><%= check_box_tag "elem_def_#{i}_check", 1, false, class: 'check_boxes' %> <%= x.css('hw').text %> - <%= x.css('fl').text %> - <%= text %>  </p>
+            <% end %>
+          <% end %>
+          <p></p>
+        </div>
+
       </div>
       <%= submit_tag "Export as PDF", :class => 'btn btn-primary' %>
     <% end %>

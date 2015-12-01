@@ -1,0 +1,30 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.top_30 {
+	float: left;
+	margin-top: 30px;
+	padding-left: 10px;
+	margin-bottom: 15px;
+}
+p {
+	float: left;
+}
+.width_1050 {
+	width: 1050px;
+}
+.width_100 {
+	width: 100%;
+}
+
+.col-60 {
+	width: 60%;
+	float: left;
+	padding-left: 20px;
+}
+.col-40 {
+	width: 40%;
+	float: left;
+	padding-left: 20px;
+	text-align: center;
+}
