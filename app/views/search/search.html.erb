@@ -67,7 +67,7 @@
           <% @pic_results['payload'].each_with_index do |x, i| %>
             <%= hidden_field_tag "picture_#{i}", x %>
             <span class="list_images">
-              <%= check_box_tag "picture_#{i}_check", 1, false, class: 'check_boxes' %>
+              <%= radio_button_tag "picture", x['svg']['png_thumb'], false, class: 'check_boxes' %>
               <img src="<%= x['svg']['png_thumb'] %>" height="150px">
               </span>
           <% end %>
@@ -95,7 +95,27 @@
           <% end %>
           <p></p>
         </div>
-
+        <div class="col-md-12">
+            <h3> <blockquote>Student Activity</blockquote></h3>
+            <%= hidden_field_tag "student_activity_count", 3 %>
+            <%= hidden_field_tag "" %>
+            <p><%= radio_button_tag "student_activity", "This is a Student Activity 1", false, class: 'check_boxes' %>
+            This is a Student Activity 1</p>
+            <p><%= radio_button_tag "student_activity", "This is a Student Activity 2", false, class: 'check_boxes' %>
+            This is a Student Activity 2</p>
+            <p><%= radio_button_tag "student_activity", "This is a Student Activity 3", false, class: 'check_boxes' %>
+            This is a Student Activity 3</p>
+            <p></p>
+        </div>
+        <div class="col-md-12">
+            <h3> <blockquote>Mastery Activity</blockquote></h3>
+            <%= hidden_field_tag "mastery_activity_count", 3 %>
+            <%= hidden_field_tag "" %>
+            <p><%= radio_button_tag "mastery_activity", "This is a Mastery Activity 1", false, class: 'check_boxes' %>This is a Mastery Activity 1</p>
+            <p><%= radio_button_tag "mastery_activity", "This is a Mastery Activity 2", false, class: 'check_boxes' %>This is a Mastery Activity 2</p>
+            <p><%= radio_button_tag "mastery_activity", "This is a Mastery Activity 3", false, class: 'check_boxes' %>This is a Mastery Activity 3</p>
+            <p></p>
+        </div>
       </div>
       <%= submit_tag "Export as PDF", :class => 'btn btn-primary' %>
     <% end %>

@@ -18,14 +18,9 @@
 			</div>
 		</div>
 		<div class="col-40">
-			<% (0..@params["pictures_count"].to_i).each_with_index do |value,index| %>
-				<% if @params["picture_#{index}_check"] == "1" %>
-					<% picture = eval(@params["picture_#{index}"]) %>
-					<p class="width_100">
-						<%= image_tag picture['svg']['png_thumb'] %>
-					</p>
-				<% end %>
-			<% end %>
+			<p class="width_100">
+				<%= image_tag @params["picture"] %>
+			</p>
 		</div>
 	</div>
 
@@ -64,8 +59,19 @@
 	</div>
 	<div class="row">
 		<h2 class="pull-left">STEP 6: </h2><p class="top_30"><%= @params['word'].capitalize %> student activity</p>
+		<% if @params["student_activity"] %>
+			<p class="width_100">
+				<%= @params["student_activity"] %>
+			</p>
+		<% end %>
 	</div>
 	<div class="row">
 		<h2 class="pull-left">STEP 7: </h2><p class="top_30"><%= @params['word'].capitalize %> mastery activity</p>
+		<% if @params["mastery_activity"] %>
+			<p class="width_100">
+				<%= @params["mastery_activity"] %>
+			</p>
+		<% end %>
+
 	</div>
 </div>
