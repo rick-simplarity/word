@@ -43,6 +43,7 @@ gem 'mw_dictionary_api', '~> 0.1.3'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'prawn'
+gem 'rails_12factor', group: :production
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
