@@ -11,6 +11,8 @@
  * file per style scope.
  *
  *= require_self
+ *= require pdf_theme
+ *= require search
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
