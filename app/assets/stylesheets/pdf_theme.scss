@@ -3,7 +3,7 @@
 
 .top_30 {
 	float: left;
-	margin-top: 30px;
+	margin-top: 15px;
 	padding-left: 10px;
 	margin-bottom: 15px;
 }
@@ -27,4 +27,11 @@ p {
 	float: left;
 	padding-left: 20px;
 	text-align: center;
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+.row h3 {
+	margin-top:10px;
 }
